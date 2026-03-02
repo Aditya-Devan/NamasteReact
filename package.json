@@ -17,6 +17,8 @@
   "author": "AdityaDevan",
   "type": "commonjs",
   "scripts": {
+    "start": "parcel idx.html",
+    "build":"parcel build idx.html",
     "test": "Na"
   },
   "devDependencies": {
