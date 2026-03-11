@@ -1,6 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
+const CDN_URL =
+"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/";
+
  const Header=()=>{
    return (
     <div className="header">
@@ -20,34 +23,209 @@ import ReactDOM from "react-dom/client";
  
  };
 
- const RestaurantCard=(props)=>{
-    const {resName , cousines}=props;
-   return(
-      <div className="res-card" style={{backgroundColor:"#f0f0f0"}}>
-        <img 
-         className="res-logo" alt="res-logo"
-         src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/FOOD_CATALOG/IMAGES/CMS/2024/3/5/b9e3f92d-a22a-4e5d-8c4b-5d7555fb80d8_1e322b26-602c-4a21-aa39-e20980eb6529_compressed" />
-        <h3>{resName}</h3>
-        <h4>{cousines}</h4>
-        <h4>4.4</h4>
-        <h4>38 minutes</h4>
-      </div>
-   )
- }
+
+const RestaurantCard = (props) => {
+  const { resData } = props;
+  return (
+    <div className="res-card">
+       <img
+     className="res-logo"
+     alt="res-logo"
+     src={CDN_URL + resData.info.cloudinaryImageId}
+     onError={(e) => {
+      e.target.src =
+       "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38";
+     }}
+/>
+       <h3>{resData.info.name}</h3>
+      <h4>{resData.info.cuisines.join(", ")}</h4>
+      <h4>{resData.info.avgRating} stars</h4>
+      <h4>{resData.info.costForTwo / 100} FOR TWO</h4>
+      <h4>{resData.info.sla.deliveryTime} minutes</h4>
+    </div>
+  );
+};
+
+
+const resList = [
+{
+info:{
+id:"1",
+name:"KFC",
+cloudinaryImageId:"f01666ac73626461d7455d9c24005cd4",
+cuisines:["Burgers","Fast Food","American"],
+avgRating:"4.2",
+costForTwo:40000,
+sla:{deliveryTime:36}
+}
+},
+{
+info:{
+id:"2",
+name:"Meghana Foods",
+cloudinaryImageId:"xqwpuhgnsaf18te7zvtv",
+cuisines:["Biryani","North Indian","Asian"],
+avgRating:"4.4",
+costForTwo:30000,
+sla:{deliveryTime:38}
+}
+},
+{
+info:{
+id:"3",
+name:"Domino's Pizza",
+cloudinaryImageId:"d0450ce1a6ba19ea60cd724471ed54a8",
+cuisines:["Pizza","Italian","Desserts"],
+avgRating:"4.1",
+costForTwo:35000,
+sla:{deliveryTime:30}
+}
+},
+{
+info:{
+id:"4",
+name:"Burger King",
+cloudinaryImageId:"e33e1d3ba7d6b2bb0d45e1001b731fcf",
+cuisines:["Burgers","American"],
+avgRating:"4.3",
+costForTwo:35000,
+sla:{deliveryTime:29}
+}
+},
+{
+info:{
+id:"5",
+name:"Subway",
+cloudinaryImageId: "2418209798927d733a50f5d2ebcc2aee",
+cuisines:["Healthy Food","Salads","Snacks"],
+avgRating:"4.0",
+costForTwo:30000,
+sla:{deliveryTime:25}
+}
+},
+{
+info:{
+id:"6",
+name:"Pizza Hut",
+cloudinaryImageId:"bdcd233971b7c81bf77e1fa4471280eb",
+cuisines:["Pizza","Italian"],
+avgRating:"4.2",
+costForTwo:40000,
+sla:{deliveryTime:32}
+}
+},
+{
+info:{
+id:"7",
+name:"McDonald's",
+cloudinaryImageId:"bb7ae131544c7d37e10fc5faf76f09d6",
+cuisines:["Burgers","Fast Food"],
+avgRating:"4.3",
+costForTwo:35000,
+sla:{deliveryTime:27}
+}
+},
+{
+info:{
+id:"8",
+name:"La Pino'z Pizza",
+cloudinaryImageId: "d0450ce1a6ba19ea60cd724471ed54a8",
+cuisines:["Pizza","Italian","Fast Food"],
+avgRating:"4.1",
+costForTwo:30000,
+sla:{deliveryTime:31}
+}
+},
+{
+info:{
+id:"9",
+name:"Baskin Robins",
+cloudinaryImageId: "85ccae4e3576f9330af102c46ca85395",
+cuisines:["Ice-cream","Deserts"],
+avgRating:"4.2",
+costForTwo:32000,
+sla:{deliveryTime:35}
+}
+},
+{
+info:{
+id:"10",
+name:"Mithi Mithaas",
+cloudinaryImageId: "75d0b3ebeb56fe2484c944e94cac7a8d",
+cuisines:["Mithai","Sweet Food"],
+avgRating:"4.0",
+costForTwo:28000,
+sla:{deliveryTime:28}
+}
+},
+{
+info:{
+id:"11",
+name:"Behrouz Biryani",
+cloudinaryImageId:"89fccaa76f2f760e2742b9e53d32bb69",
+cuisines:["Biryani","Mughlai"],
+avgRating:"4.4",
+costForTwo:45000,
+sla:{deliveryTime:40}
+}
+},
+{
+info:{
+id:"12",
+name:"Own The Bowl ",
+cloudinaryImageId: "6e04be27387483a7c00444f8e8241108",
+cuisines:["North Indian","Dinner","Exotic"],
+avgRating:"4.3",
+costForTwo:30000,
+sla:{deliveryTime:26}
+}
+},
+{
+info:{
+    id:"16",
+    name:"Pizza Heaven",
+    image:"https://images.unsplash.com/photo-1565299624946-b28f40a0ae38",
+    cuisines:["Pizza","Italian"],
+    avgRating:"4.3",
+    costForTwo:35000,
+    sla:{deliveryTime:28}
+  }
+},
+{
+info:{
+id:"14",
+name:"Starbucks",
+cloudinaryImageId:"2418209798927d733a50f5d2ebcc2aee",
+cuisines:["Coffee","Beverages"],
+avgRating:"4.5",
+costForTwo:50000,
+sla:{deliveryTime:22}
+}
+},
+{
+info:{
+id:"15",
+name:"Wow! Momo",
+cloudinaryImageId:"64fd45fd9f44c1737bc446e470bed666",
+cuisines:["Momos","Chinese","Fast Food"],
+avgRating:"4.1",
+costForTwo:25000,
+sla:{deliveryTime:24}
+}
+}
+];
 
  const Body=()=>{
   return(
-      <div className="body">
+    <div className="body">
     <div className="search">Search</div>
     <div className="res-contain">
-      <RestaurantCard
-       resName="Meghana Foods" cousines="Biryani,North Indian,Asian"
-      /> 
-      <RestaurantCard resName="KFC" cousines="Burger,fast Food" />
+     {resList.map((restaurant) => (
+     <RestaurantCard key={restaurant.info.id} resData={restaurant} />
+     ))}
     </div>
   </div>
   )
-  
  }
 
  const AppLayout=()=>{
