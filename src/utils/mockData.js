@@ -1,53 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
 
-const CDN_URL =
-"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/";
-
- const Header=()=>{
-   return (
-    <div className="header">
-    <div className="logo-container">
-    <img className="logo" src="https://cdn.logojoy.com/wp-content/uploads/20200506165903/skip-the-dishes-ad.png"/>
-   </div>
-  <div className="nav-items">
-   <ul>
-    <li>Home</li>
-    <li>About Us</li>
-    <li>Connect</li>
-    <li>Cart</li>
-   </ul>
-  </div>
-  </div>
-   );
- 
- };
-
-
-const RestaurantCard = (props) => {
-  const { resData } = props;
-  return (
-    <div className="res-card">
-       <img
-     className="res-logo"
-     alt="res-logo"
-     src={CDN_URL + resData.info.cloudinaryImageId}
-     onError={(e) => {
-      e.target.src =
-       "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38";
-     }}
-/>
-       <h3>{resData.info.name}</h3>
-      <h4>{resData.info.cuisines.join(", ")}</h4>
-      <h4>{resData.info.avgRating} stars</h4>
-      <h4>{resData.info.costForTwo / 100} FOR TWO</h4>
-      <h4>{resData.info.sla.deliveryTime} minutes</h4>
-    </div>
-  );
-};
-
-
-const resList = [
+export const resList = [
 {
 info:{
 id:"1",
@@ -214,31 +166,3 @@ sla:{deliveryTime:24}
 }
 }
 ];
-
- const Body=()=>{
-  return(
-    <div className="body">
-    <div className="search">Search</div>
-    <div className="res-contain">
-     {resList.map((restaurant) => (
-     <RestaurantCard key={restaurant.info.id} resData={restaurant} />
-     ))}
-    </div>
-  </div>
-  )
- }
-
- const AppLayout=()=>{
-  return (
-    <div className="app">
-     <Header/>
-     <Body/> 
-    </div>
-  );
- }
-
-const root=ReactDOM.createRoot(document.getElementById("root"));
-
-root.render(<AppLayout/>);
-
-
