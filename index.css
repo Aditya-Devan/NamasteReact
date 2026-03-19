@@ -20,9 +20,10 @@
 }
 
 .res-contain{
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  display: flex;
+  flex-wrap: wrap;  /* cards wrap to next line naturally */
   gap: 20px;
+  padding: 10px;
 }
 
 .res-card {

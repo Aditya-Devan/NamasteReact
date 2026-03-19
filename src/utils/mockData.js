@@ -17,7 +17,7 @@ id:"2",
 name:"Meghana Foods",
 cloudinaryImageId:"xqwpuhgnsaf18te7zvtv",
 cuisines:["Biryani","North Indian","Asian"],
-avgRating:"4.4",
+avgRating:"3.4",
 costForTwo:30000,
 sla:{deliveryTime:38}
 }
@@ -28,7 +28,7 @@ id:"3",
 name:"Domino's Pizza",
 cloudinaryImageId:"d0450ce1a6ba19ea60cd724471ed54a8",
 cuisines:["Pizza","Italian","Desserts"],
-avgRating:"4.1",
+avgRating:"3.1",
 costForTwo:35000,
 sla:{deliveryTime:30}
 }
@@ -50,7 +50,7 @@ id:"5",
 name:"Subway",
 cloudinaryImageId: "2418209798927d733a50f5d2ebcc2aee",
 cuisines:["Healthy Food","Salads","Snacks"],
-avgRating:"4.0",
+avgRating:"3.0",
 costForTwo:30000,
 sla:{deliveryTime:25}
 }
@@ -83,7 +83,7 @@ id:"8",
 name:"La Pino'z Pizza",
 cloudinaryImageId: "d0450ce1a6ba19ea60cd724471ed54a8",
 cuisines:["Pizza","Italian","Fast Food"],
-avgRating:"4.1",
+avgRating:"2.1",
 costForTwo:30000,
 sla:{deliveryTime:31}
 }
@@ -105,7 +105,7 @@ id:"10",
 name:"Mithi Mithaas",
 cloudinaryImageId: "75d0b3ebeb56fe2484c944e94cac7a8d",
 cuisines:["Mithai","Sweet Food"],
-avgRating:"4.0",
+avgRating:"3.0",
 costForTwo:28000,
 sla:{deliveryTime:28}
 }
