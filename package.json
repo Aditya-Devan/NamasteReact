@@ -18,7 +18,7 @@
   "type": "commonjs",
   "scripts": {
     "start": "parcel idx.html",
-    "build":"parcel build idx.html",
+    "build": "parcel build idx.html",
     "test": "Na"
   },
   "devDependencies": {
@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^6.30.3"
   }
 }
