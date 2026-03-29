@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 // Helper function to render stars
 const RatingStars = ({ rating }) => {
@@ -211,717 +211,302 @@ const ProductPage = () => {
   }
 
   return (
-    <div className="product-page">
+    <div className="container py-3 min-vh-100 animate-fadeIn product-page-compact">
       {/* Success Toast */}
       {showSuccessMessage && (
-        <div className="success-toast">
-          <div className="toast-content">
-            <span className="toast-icon">✓</span>
-            <span>Added to cart! ({quantity} item{quantity !== 1 ? 's' : ''})</span>
+        <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: 1100 }}>
+          <div className="toast show align-items-center text-white bg-dark border-0 shadow-lg rounded-4" role="alert">
+            <div className="d-flex p-2">
+              <div className="toast-body d-flex align-items-center gap-2">
+                <i className="fas fa-check-circle text-success fs-5"></i>
+                <span className="fw-medium">Added to your shopping cart!</span>
+              </div>
+              <button type="button" className="btn-close btn-close-white me-2 m-auto" onClick={() => setShowSuccessMessage(false)}></button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Main Product Section */}
-      <div className="product-container">
-        <div className="product-grid">
-          {/* Image Gallery */}
-          <div className="image-gallery">
-            <div className="main-image">
-              <img
-                src={hasImages ? product.images[selectedImage] : product.thumbnail}
-                alt={product.title}
-              />
-            </div>
-            {hasImages && product.images.length > 1 && (
-              <div className="thumbnail-list">
-                {product.images.map((img, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setSelectedImage(idx)}
-                    className={`thumbnail-btn ${selectedImage === idx ? 'active' : ''}`}
-                  >
-                    <img src={img} alt={`${product.title} view ${idx + 1}`} />
-                  </button>
-                ))}
+      <div className="bg-white rounded-4 shadow-sm overflow-hidden border border-light-subtle mb-3">
+        <div className="row g-0">
+          {/* Image Gallery Column */}
+          <div className="col-lg-5 p-2 p-md-3 bg-light d-flex align-items-center justify-content-center">
+            <div className="w-100 sticky-top" style={{ top: '1rem' }}>
+              <div className="bg-white rounded-4 p-2 mb-2 text-center d-flex align-items-center justify-content-center shadow-xs main-image-container" style={{ height: '340px' }}>
+                <img
+                  src={hasImages ? product.images[selectedImage] : product.thumbnail}
+                  alt={product.title}
+                  className="img-fluid h-100 object-fit-contain transition-all product-image-zoom"
+                />
               </div>
-            )}
+              {hasImages && product.images.length > 1 && (
+                <div className="d-flex gap-2 overflow-auto pb-1 scrollbar-hidden justify-content-center">
+                  {product.images.map((img, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setSelectedImage(idx)}
+                      className={`btn p-0 border-2 rounded-3 overflow-hidden shadow-xs flex-shrink-0 transition-all ${selectedImage === idx ? 'border-primary ring-active' : 'border-transparent opacity-60 hover-opacity-100'}`}
+                      style={{ width: '55px', height: '55px' }}
+                    >
+                      <img src={img} alt="thumb" className="w-100 h-100 object-fit-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Product Info */}
-          <div className="product-info">
-            {/* Brand and Tags */}
-            <div className="brand-tags">
-              {product.brand && <span className="brand-badge">{product.brand}</span>}
-              {product.tags && product.tags.map((tag) => (
-                <span key={tag} className="tag-badge">#{tag}</span>
+          {/* Product Details Column */}
+          <div className="col-lg-7 p-3 p-md-4 d-flex flex-column gap-2 bg-white">
+            <nav aria-label="breadcrumb">
+              <ol className="breadcrumb mb-1 text-uppercase fw-semibold" style={{ fontSize: '0.6rem', letterSpacing: '0.05em' }}>
+                <li className="breadcrumb-item"><Link to="/" className="text-decoration-none text-secondary">Store</Link></li>
+                <li className="breadcrumb-item active text-primary">{product.category}</li>
+              </ol>
+            </nav>
+
+            <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
+              {product.brand && <span className="badge bg-light text-dark border px-2 py-1 rounded text-uppercase" style={{ fontSize: '0.55rem', fontWeight: '800' }}>{product.brand}</span>}
+              {product.tags && product.tags.slice(0, 2).map((tag) => (
+                 <span key={tag} className="badge bg-white text-secondary border px-2 py-1 rounded small fw-normal">#{tag}</span>
               ))}
-              <span className="category-badge">{product.category}</span>
             </div>
 
-            {/* Title */}
-            <h1 className="product-title">{product.title}</h1>
-
-            {/* Rating and Reviews */}
-            <div className="rating-section">
-              <RatingStars rating={product.rating} />
-              <span className="rating-value">{product.rating}</span>
-              <span className="review-count">
-                ({product.reviews ? product.reviews.length : 0} reviews)
-              </span>
+            <div>
+              <h1 className="h3 fw-bold text-dark mb-1">{product.title}</h1>
+              <div className="d-flex align-items-center gap-2">
+                <div className="d-flex align-items-center text-warning" style={{ fontSize: '0.8rem' }}>
+                  <RatingStars rating={product.rating} />
+                  <span className="ms-2 fw-bold text-dark">{product.rating}</span>
+                </div>
+                <span className="text-muted" style={{ fontSize: '0.7rem' }}>• {product.reviews ? product.reviews.length : 0} reviews</span>
+              </div>
             </div>
 
-            {/* Price */}
-            <div className="price-section">
-              <div className="price-wrapper">
-                <span className="current-price">${discountedPrice.toFixed(2)}</span>
+            <div className="py-1">
+              <div className="d-flex align-items-baseline gap-2">
+                <span className="h2 fw-bold text-primary mb-0">${discountedPrice.toFixed(2)}</span>
                 {product.discountPercentage > 0 && (
-                  <>
-                    <span className="original-price">${product.price.toFixed(2)}</span>
-                    <span className="discount-badge">{product.discountPercentage}% OFF</span>
-                  </>
+                  <div className="d-flex align-items-center gap-2">
+                    <span className="text-muted text-decoration-line-through fw-medium h5 mb-0">${product.price.toFixed(2)}</span>
+                    <span className="badge bg-danger rounded-pill px-2 py-1" style={{ fontSize: '0.65rem' }}>-{product.discountPercentage}%</span>
+                  </div>
                 )}
               </div>
-              <p className="price-note">Tax included. Free shipping on orders over $50</p>
             </div>
 
-            {/* Description */}
-            <p className="product-description">{product.description}</p>
+            <p className="text-secondary mb-2 fw-normal" style={{ fontSize: '0.875rem', lineHeight: '1.5' }}>{product.description}</p>
 
-            {/* Stock Status */}
-            <div className="stock-status">
-              {isLowStock ? (
-                <div className="low-stock">
-                  <span className="warning-icon">⚠</span>
-                  <span>Low Stock - Only {product.stock} left</span>
-                </div>
-              ) : product.stock > 0 ? (
-                <div className="in-stock">
-                  <span className="check-icon">✓</span>
-                  <span>In Stock ({product.stock} available)</span>
-                </div>
-              ) : (
-                <div className="out-of-stock">
-                  <span className="warning-icon">✗</span>
-                  <span>Out of Stock</span>
+            <div className="p-3 bg-light rounded-4 border border-light-subtle shadow-xs">
+              <div className="d-flex align-items-center justify-content-between mb-2">
+                <span className="fw-bold text-dark" style={{ fontSize: '0.7rem' }}>AVAILABILITY</span>
+                {isLowStock ? (
+                  <span className="text-warning fw-bold" style={{ fontSize: '0.75rem' }}><i className="fas fa-exclamation-triangle me-1"></i>ONLY {product.stock} LEFT</span>
+                ) : product.stock > 0 ? (
+                  <span className="text-success fw-bold" style={{ fontSize: '0.75rem' }}><i className="fas fa-check me-1"></i>{product.stock} IN STOCK</span>
+                ) : (
+                  <span className="text-danger fw-bold" style={{ fontSize: '0.75rem' }}>OUT OF STOCK</span>
+                )}
+              </div>
+
+              {product.stock > 0 && (
+                <div className="row g-2">
+                  <div className="col-5 col-sm-4">
+                    <QuantitySelector
+                      quantity={quantity}
+                      onQuantityChange={setQuantity}
+                      minOrder={product.minimumOrderQuantity || 1}
+                      maxStock={product.stock}
+                    />
+                  </div>
+                  <div className="col-7 col-sm-8">
+                    <button onClick={handleAddToCart} className="btn btn-primary w-100 rounded-3 py-2 fw-bold shadow-sm btn-hover-effect d-flex align-items-center justify-content-center gap-2 h-100">
+                      <i className="fas fa-shopping-cart small"></i>
+                      <span className="d-none d-sm-inline">ADD TO CART • </span>
+                      <span>${totalPrice.toFixed(2)}</span>
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
 
-            {/* Quantity Selector and Add to Cart */}
-            {product.stock > 0 && (
-              <>
-                <div className="cart-section">
-                  <QuantitySelector
-                    quantity={quantity}
-                    onQuantityChange={setQuantity}
-                    minOrder={product.minimumOrderQuantity || 1}
-                    maxStock={product.stock}
-                  />
-                  <button onClick={handleAddToCart} className="add-to-cart-btn">
-                    Add to Cart • ${totalPrice.toFixed(2)}
-                  </button>
+            {/* Feature Icons Compact */}
+            <div className="row g-2 pt-1">
+              {[
+                { icon: "fa-truck", label: "SHIPPING", value: product.shippingInformation || "Fast" },
+                { icon: "fa-shield-alt", label: "WARRANTY", value: product.warrantyInformation || "2 Years" },
+                { icon: "fa-undo", label: "RETURNS", value: product.returnPolicy || "30 Days" },
+                { icon: "fa-box", label: "WEIGHT", value: `${product.weight}kg` }
+              ].map((item, i) => (
+                <div key={i} className="col-6 col-md-3">
+                  <div className="p-2 border border-light-subtle rounded-3 bg-white h-100 d-flex flex-column gap-1">
+                    <i className={`fas ${item.icon} text-primary-emphasis`} style={{ fontSize: '0.7rem' }}></i>
+                    <span className="text-muted fw-bold text-uppercase" style={{ fontSize: '0.45rem', letterSpacing: '0.05em' }}>{item.label}</span>
+                    <span className="fw-semibold text-dark text-truncate w-100" style={{ fontSize: '0.65rem' }}>{item.value}</span>
+                  </div>
                 </div>
-
-                {/* Minimum Order Notice */}
-                {product.minimumOrderQuantity > 1 && (
-                  <p className="min-order-notice">
-                    Minimum order quantity: {product.minimumOrderQuantity} units
-                  </p>
-                )}
-              </>
-            )}
-
-            {/* Shipping and Warranty Info */}
-            <div className="info-grid">
-              <div className="info-card">
-                <span className="info-icon">🚚</span>
-                <div>
-                  <p className="info-label">Shipping</p>
-                  <p className="info-value">{product.shippingInformation || "Standard shipping"}</p>
-                </div>
-              </div>
-              <div className="info-card">
-                <span className="info-icon">🛡️</span>
-                <div>
-                  <p className="info-label">Warranty</p>
-                  <p className="info-value">{product.warrantyInformation || "Standard warranty"}</p>
-                </div>
-              </div>
-              <div className="info-card">
-                <span className="info-icon">↺</span>
-                <div>
-                  <p className="info-label">Returns</p>
-                  <p className="info-value">{product.returnPolicy || "30 days return policy"}</p>
-                </div>
-              </div>
-              <div className="info-card">
-                <span className="info-icon">📦</span>
-                <div>
-                  <p className="info-label">Weight</p>
-                  <p className="info-value">{product.weight || "N/A"} {product.weight ? (product.weight < 10 ? "g" : "kg") : ""}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Additional Info */}
-            <div className="additional-info">
-              {product.sku && <p>SKU: {product.sku}</p>}
-              {product.meta?.barcode && <p>Barcode: {product.meta.barcode}</p>}
-              {product.dimensions && (
-                <p>Dimensions: {product.dimensions.width} × {product.dimensions.height} × {product.dimensions.depth} cm</p>
-              )}
+              ))}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Reviews Section */}
+      {/* Reviews Section Compact */}
       {product.reviews && product.reviews.length > 0 && (
-        <div className="reviews-section">
-          <div className="reviews-header">
+        <div className="p-3 p-md-4 bg-white rounded-4 shadow-sm border border-light-subtle">
+          <div className="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
             <div>
-              <h2 className="reviews-title">Customer Reviews</h2>
-              <div className="reviews-summary">
+              <h5 className="fw-bold text-dark mb-0">Customer Reviews</h5>
+              <div className="d-flex align-items-center gap-2">
                 <RatingStars rating={product.rating} />
-                <span className="review-total">Based on {product.reviews.length} reviews</span>
+                <span className="text-muted" style={{ fontSize: '0.75rem' }}>({product.reviews.length})</span>
               </div>
             </div>
-            <button className="write-review-btn">
-              <span>✍️</span>
-              Write a Review
+            <button className="btn btn-outline-dark btn-sm rounded-pill px-3 fw-semibold" style={{ fontSize: '0.75rem' }}>
+              Write Review
             </button>
           </div>
-          <div className="reviews-list">
+          <div className="row g-2">
             {product.reviews.map((review, idx) => (
-              <ReviewCard key={idx} review={review} />
+              <div key={idx} className="col-12 col-md-6">
+                <div className="p-2 px-3 border border-light-subtle rounded-3 h-100 bg-light-subtle transition-all hover-white shadow-hover">
+                  <ReviewCard review={review} />
+                </div>
+              </div>
             ))}
           </div>
         </div>
       )}
 
       <style>{`
-        /* Global Styles */
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
+        .product-page-compact {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
         }
-
-        .product-page {
-          min-height: 100vh;
-          background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
-          padding: 40px 20px;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        
+        .main-image-container {
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
-
-        .product-container {
-          max-width: 1200px;
-          margin: 0 auto;
+        
+        .product-image-zoom {
+            transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
-
-        .product-grid {
-          background: white;
-          border-radius: 24px;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 40px;
-          padding: 32px;
+        
+        .main-image-container:hover .product-image-zoom {
+            transform: scale(1.08);
         }
-
-        @media (max-width: 768px) {
-          .product-grid {
-            grid-template-columns: 1fr;
-            padding: 20px;
-            gap: 24px;
-          }
+        
+        .ring-active {
+            border-color: #0d6efd !important;
+            box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.2);
         }
-
-        /* Image Gallery */
-        .image-gallery {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
+        
+        .btn-hover-effect {
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
-
-        .main-image {
-          aspect-ratio: 1;
-          background: #f8f9fa;
-          border-radius: 16px;
-          overflow: hidden;
+        
+        .btn-hover-effect:active {
+            transform: scale(0.98);
         }
-
-        .main-image img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.3s ease;
+        
+        .shadow-xs {
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
-
-        .main-image img:hover {
-          transform: scale(1.05);
+        
+        .shadow-hover:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            transform: translateY(-1px);
         }
-
-        .thumbnail-list {
-          display: flex;
-          gap: 12px;
-          overflow-x: auto;
-          padding-bottom: 4px;
+        
+        .hover-white:hover {
+            background-color: white !important;
+            border-color: #dee2e6 !important;
         }
-
-        .thumbnail-btn {
-          flex-shrink: 0;
-          width: 80px;
-          height: 80px;
-          border-radius: 12px;
-          overflow: hidden;
-          border: 2px solid #e9ecef;
-          background: none;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-
-        .thumbnail-btn.active {
-          border-color: #e83e8c;
-          box-shadow: 0 4px 12px rgba(232, 62, 140, 0.2);
-        }
-
-        .thumbnail-btn img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        /* Product Info */
-        .product-info {
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-        }
-
-        .brand-tags {
-          display: flex;
-          gap: 8px;
-          flex-wrap: wrap;
-        }
-
-        .brand-badge, .category-badge {
-          background: #fce4ec;
-          color: #e83e8c;
-          padding: 4px 12px;
-          border-radius: 20px;
-          font-size: 13px;
-          font-weight: 600;
-        }
-
-        .category-badge {
-          background: #e3f2fd;
-          color: #1976d2;
-        }
-
-        .tag-badge {
-          background: #f1f3f5;
-          color: #6c757d;
-          padding: 4px 12px;
-          border-radius: 20px;
-          font-size: 12px;
-        }
-
-        .product-title {
-          font-size: 28px;
-          font-weight: 700;
-          color: #212529;
-          line-height: 1.3;
-        }
-
+        
         .rating-stars {
-          display: flex;
-          gap: 2px;
+            display: flex;
+            color: #ffc107;
+            gap: 2px;
         }
-
-        .star {
-          font-size: 16px;
-          color: #e9ecef;
-        }
-
-        .star.filled {
-          color: #fbbf24;
-        }
-
-        .star.half-filled {
-          position: relative;
-          color: #fbbf24;
-          clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
-        }
-
-        .rating-section {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-
-        .rating-value {
-          font-weight: 600;
-          color: #212529;
-        }
-
-        .review-count {
-          color: #6c757d;
-          font-size: 14px;
-        }
-
-        .price-section {
-          padding: 12px 0;
-        }
-
-        .price-wrapper {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          flex-wrap: wrap;
-        }
-
-        .current-price {
-          font-size: 32px;
-          font-weight: 700;
-          color: #212529;
-        }
-
-        .original-price {
-          font-size: 18px;
-          color: #adb5bd;
-          text-decoration: line-through;
-        }
-
-        .discount-badge {
-          background: #d4edda;
-          color: #155724;
-          padding: 4px 10px;
-          border-radius: 20px;
-          font-size: 13px;
-          font-weight: 600;
-        }
-
-        .price-note {
-          font-size: 12px;
-          color: #6c757d;
-          margin-top: 8px;
-        }
-
-        .product-description {
-          color: #495057;
-          line-height: 1.6;
-        }
-
-        .stock-status {
-          margin: 8px 0;
-        }
-
-        .low-stock, .in-stock, .out-of-stock {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          padding: 6px 14px;
-          border-radius: 30px;
-          font-size: 13px;
-          font-weight: 500;
-        }
-
-        .low-stock {
-          background: #fff3e0;
-          color: #e67700;
-        }
-
-        .in-stock {
-          background: #e6f9ed;
-          color: #2b8c4a;
-        }
-
-        .out-of-stock {
-          background: #ffe6e6;
-          color: #dc3545;
-        }
-
-        .cart-section {
-          display: flex;
-          gap: 16px;
-          flex-wrap: wrap;
-        }
-
+        
+        .star { font-size: 0.8rem; }
+        
         .quantity-selector {
-          display: flex;
-          align-items: center;
-          border: 1px solid #dee2e6;
-          border-radius: 12px;
-          overflow: hidden;
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
         }
-
+        
         .qty-btn {
-          width: 44px;
-          height: 48px;
-          background: white;
-          border: none;
-          font-size: 20px;
-          cursor: pointer;
-          transition: background 0.2s;
+            border: none;
+            background: none;
+            padding: 4px 8px;
+            font-weight: bold;
+            flex: 1;
+            transition: background 0.2s;
+            font-size: 1rem;
         }
-
-        .qty-btn:hover:not(:disabled) {
-          background: #f8f9fa;
-        }
-
-        .qty-btn:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-
+        
+        .qty-btn:hover:not(:disabled) { background: #f8f9fa; color: #0d6efd; }
+        .qty-btn:disabled { color: #dee2e6; }
+        
         .qty-value {
-          width: 52px;
-          text-align: center;
-          font-weight: 500;
+            flex: 1;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-left: 1px solid #eee;
+            border-right: 1px solid #eee;
         }
-
-        .add-to-cart-btn {
-          flex: 1;
-          background: linear-gradient(135deg, #e83e8c 0%, #9b4d96 100%);
-          color: white;
-          border: none;
-          padding: 0 24px;
-          height: 48px;
-          border-radius: 12px;
-          font-weight: 600;
-          font-size: 16px;
-          cursor: pointer;
-          transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .add-to-cart-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(232, 62, 140, 0.3);
-        }
-
-        .min-order-notice {
-          font-size: 12px;
-          color: #868e96;
-        }
-
-        .info-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 12px;
-          background: #f8f9fa;
-          padding: 20px;
-          border-radius: 16px;
-          margin: 8px 0;
-        }
-
-        .info-card {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .info-icon {
-          font-size: 22px;
-        }
-
-        .info-label {
-          font-size: 11px;
-          color: #868e96;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        .info-value {
-          font-size: 13px;
-          font-weight: 500;
-          color: #212529;
-        }
-
-        .additional-info {
-          font-size: 12px;
-          color: #868e96;
-          border-top: 1px solid #e9ecef;
-          padding-top: 16px;
-          margin-top: 8px;
-        }
-
-        .additional-info p {
-          margin-bottom: 4px;
-        }
-
-        .reviews-section {
-          max-width: 1200px;
-          margin: 40px auto 0;
-          background: white;
-          border-radius: 24px;
-          padding: 32px;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-        }
-
-        .reviews-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          flex-wrap: wrap;
-          gap: 16px;
-          margin-bottom: 28px;
-          padding-bottom: 20px;
-          border-bottom: 1px solid #e9ecef;
-        }
-
-        .reviews-title {
-          font-size: 24px;
-          font-weight: 700;
-          color: #212529;
-          margin-bottom: 8px;
-        }
-
-        .reviews-summary {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .review-total {
-          font-size: 14px;
-          color: #6c757d;
-        }
-
-        .write-review-btn {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          background: #212529;
-          color: white;
-          border: none;
-          padding: 10px 20px;
-          border-radius: 40px;
-          font-weight: 500;
-          cursor: pointer;
-          transition: background 0.2s;
-        }
-
-        .write-review-btn:hover {
-          background: #343a40;
-        }
-
-        .reviews-list {
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-        }
-
+        
         .review-card {
-          padding-bottom: 20px;
-          border-bottom: 1px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
         }
-
-        .review-card:last-child {
-          border-bottom: none;
-          padding-bottom: 0;
-        }
-
-        .review-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 12px;
-          flex-wrap: wrap;
-          gap: 12px;
-        }
-
+        
         .reviewer-info {
-          display: flex;
-          align-items: center;
-          gap: 12px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-
+        
         .reviewer-avatar {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #e83e8c, #9b4d96);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          font-weight: 600;
-          font-size: 16px;
+            width: 28px;
+            height: 28px;
+            background: #e9ecef;
+            color: #495057;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.75rem;
         }
-
-        .reviewer-name {
-          font-weight: 600;
-          color: #212529;
+        
+        .reviewer-name { font-weight: 700; margin: 0; font-size: 0.8rem; }
+        .review-date { font-size: 0.65rem; color: #adb5bd; margin: 0; }
+        .review-comment { font-size: 0.8rem; line-height: 1.4; color: #495057; margin: 0; }
+        
+        .scrollbar-hidden::-webkit-scrollbar { display: none; }
+        .scrollbar-hidden { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-
-        .review-date {
-          font-size: 11px;
-          color: #adb5bd;
-          margin-top: 2px;
-        }
-
-        .review-comment {
-          color: #495057;
-          line-height: 1.5;
-          margin-left: 52px;
-        }
-
-        .success-toast {
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          z-index: 1000;
-          animation: slideIn 0.3s ease-out;
-        }
-
-        .toast-content {
-          background: #2b8c4a;
-          color: white;
-          padding: 12px 20px;
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .toast-icon {
-          font-size: 18px;
-          font-weight: bold;
-        }
-
-        @keyframes slideIn {
-          from {
-            transform: translateX(100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-
-        @media (max-width: 640px) {
-          .product-page {
-            padding: 20px 16px;
-          }
-          .product-title {
-            font-size: 24px;
-          }
-          .current-price {
-            font-size: 28px;
-          }
-          .info-grid {
-            grid-template-columns: 1fr;
-          }
-          .review-comment {
-            margin-left: 0;
-          }
-        }
+        .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
       `}</style>
     </div>
+
   );
 };
 

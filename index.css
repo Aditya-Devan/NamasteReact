@@ -1,48 +1,5 @@
-.header{
-    display: flex;
-    border: 1px solid black;
-    justify-content: space-between;
-}
-
-.logo{
-    width: 200px;
-}
-
-.nav-items > ul{
-    display: flex;
-    list-style-type: none;
-}
-
-.nav-items>ul>li{
-    font-size: 20px;
-    padding: 10px;
-    margin: 10px;
-}
-
-.res-contain{
-  display: flex;
-  flex-wrap: wrap;  /* cards wrap to next line naturally */
-  gap: 20px;
-  padding: 10px;
-}
-
-.res-card {
-  width: 200px;
-  padding: 5px;
-  background-color: #f0f0f0;
-}
-
-.res-card:hover{
-    cursor: pointer;
-    border:1px solid black;
-}
-
-.search{
-    padding: 10px;
-}
-
-.res-logo{
-   width: 100%;
-   height: 140px;
-   object-fit: cover;
+/* Cleaned up. All styles moved to Bootstrap or Component-level style tags. */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import './style.css';
 
 const ProductCard = ({ resData }) => {
-  const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
   if (!resData) return null;
@@ -15,10 +13,7 @@ const ProductCard = ({ resData }) => {
     discountPercentage = 0,
     rating,
     stock,
-    tags = [],
-    brand,
     thumbnail,
-    reviews = []
   } = resData;
 
   const discountedPrice = discountPercentage > 0 
@@ -27,145 +22,104 @@ const ProductCard = ({ resData }) => {
   
   const originalPrice = price.toFixed(2);
   const ratingValue = parseFloat(rating).toFixed(1);
-  const isLowStock = stock < 20 && stock > 0;
   const isOutOfStock = stock === 0;
 
-  const renderStars = (ratingValue) => {
-    const stars = [];
-    const numRating = parseFloat(ratingValue);
-    const fullStars = Math.floor(numRating);
-    const hasHalfStar = numRating % 1 >= 0.5;
-    
-    for (let i = 1; i <= 5; i++) {
-      if (i <= fullStars) {
-        stars.push(<i key={i} className="fas fa-star"></i>);
-      } else if (i === fullStars + 1 && hasHalfStar) {
-        stars.push(<i key={i} className="fas fa-star-half-alt"></i>);
-      } else {
-        stars.push(<i key={i} className="far fa-star"></i>);
-      }
-    }
-    return stars;
-  };
-
-  const incrementQuantity = () => {
-    if (quantity + 1 <= stock) {
-      setQuantity(quantity + 1);
-    }
-  };
-
-  const decrementQuantity = () => {
-    if (quantity - 1 >= 1) {
-      setQuantity(quantity - 1);
-    }
-  };
-
   return (
-    <div className="product-card-horizontal">
+    <div className="card h-100 border-0 shadow-xs card-premium transition-all overflow-hidden rounded-4">
       {/* Image Section */}
-      <div className="product-image-section">
-        <img src={thumbnail} alt={title} />
+      <div className="position-relative bg-light p-2 text-center d-flex align-items-center justify-content-center" style={{ height: '170px' }}>
+        <img 
+          src={thumbnail} 
+          className="card-img-top h-100 object-fit-contain transition-transform duration-500 card-image" 
+          alt={title} 
+        />
         {discountPercentage > 0 && (
-          <div className="discount-badge-horizontal">
+          <span className="position-absolute top-0 start-0 badge rounded-2 bg-danger m-2 shadow-xs px-2 py-1" style={{ fontSize: '0.65rem', fontWeight: '800' }}>
             -{discountPercentage}%
-          </div>
+          </span>
         )}
-        {isOutOfStock && (
-          <div className="out-of-stock-overlay-horizontal">
-            <span>Out of Stock</span>
-          </div>
-        )}
+        <button 
+          className={`position-absolute top-0 end-0 btn btn-sm m-2 rounded-circle shadow-xs bg-white border-0 p-1 d-flex align-items-center justify-content-center ${isWishlisted ? 'text-danger' : 'text-muted'}`}
+          style={{ width: '28px', height: '28px', transition: 'all 0.2s', zIndex: 2 }}
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsWishlisted(!isWishlisted); }}
+        >
+          <i className={`${isWishlisted ? 'fas' : 'far'} fa-heart`} style={{ fontSize: '0.85rem' }}></i>
+        </button>
       </div>
 
       {/* Info Section */}
-      <div className="product-info-section">
-        {/* Brand & Category */}
-        <div className="product-meta-horizontal">
-          {brand && <span className="brand-horizontal">{brand}</span>}
-          {category && (
-            <span className="category-horizontal">
-              <i className="fas fa-tag"></i> {category}
-            </span>
-          )}
-        </div>
-
-        {/* Title */}
-        <h4 className="product-title-horizontal">{title}</h4>
-
-        {/* Tags */}
-        {tags && tags.length > 0 && (
-          <div className="tags-horizontal">
-            {tags.slice(0, 2).map((tag, idx) => (
-              <span key={idx} className="tag-horizontal">#{tag}</span>
-            ))}
-          </div>
-        )}
-
-        {/* Rating */}
-        <div className="rating-section-horizontal">
-          <div className="stars-horizontal">
-            {renderStars(ratingValue)}
-          </div>
-          <span className="rating-value-horizontal">{ratingValue}</span>
-          <span className="reviews-count-horizontal">
-            ({reviews?.length || 0})
+      <div className="card-body d-flex flex-column p-3 gap-1">
+        <div className="d-flex justify-content-between align-items-center mb-1">
+          <span className="text-uppercase text-secondary fw-bold" style={{ fontSize: '0.55rem', letterSpacing: '0.05em' }}>
+            {category}
           </span>
+          <div className="d-flex align-items-center text-warning" style={{ fontSize: '0.75rem' }}>
+            <i className="fas fa-star me-1" style={{ fontSize: '0.7rem' }}></i>
+            <span className="fw-bold text-dark">{ratingValue}</span>
+          </div>
         </div>
 
-        {/* Price */}
-        <div className="price-section-horizontal">
-          {discountPercentage > 0 && (
-            <span className="original-price-horizontal">${originalPrice}</span>
-          )}
-          <span className="discounted-price-horizontal">${discountedPrice}</span>
-        </div>
-
-        {/* Stock Status */}
-        <div className="stock-status-horizontal">
-          <span className={`status-badge-horizontal ${isOutOfStock ? 'out' : isLowStock ? 'low' : 'in'}`}>
-            <i className={`fas ${isOutOfStock ? 'fa-times-circle' : isLowStock ? 'fa-exclamation-circle' : 'fa-check-circle'}`}></i>
-            {isOutOfStock ? ' Out' : isLowStock ? ` Only ${stock}` : ` In Stock`}
-          </span>
-        </div>
-
-        {/* Description */}
-        <p className="description-horizontal">
-          {description.length > 80 ? `${description.substring(0, 80)}...` : description}
+        <h6 className="card-title fw-bold text-dark text-truncate mb-1" style={{ fontSize: '0.9rem' }} title={title}>{title}</h6>
+        
+        <p className="card-text text-muted mb-2 line-clamp-2" style={{ fontSize: '0.75rem', lineHeight: '1.4', height: '2.1rem', overflow: 'hidden' }}>
+          {description}
         </p>
 
-        {/* Quantity & Actions */}
-        {!isOutOfStock && (
-          <div className="actions-horizontal">
-            <div className="quantity-horizontal">
-              <button onClick={decrementQuantity} disabled={quantity <= 1} className="qty-btn-horizontal">
-                <i className="fas fa-minus"></i>
-              </button>
-              <span className="quantity-value">{quantity}</span>
-              <button onClick={incrementQuantity} disabled={quantity >= stock} className="qty-btn-horizontal">
-                <i className="fas fa-plus"></i>
-              </button>
-            </div>
-            <button className="add-to-cart-btn-horizontal">
-              <i className="fas fa-shopping-cart"></i>
-              Add
+        <div className="d-flex align-items-baseline gap-2 mb-2 mt-auto">
+          <span className="h5 fw-bold text-primary mb-0">${discountedPrice}</span>
+          {discountPercentage > 0 && (
+            <span className="text-muted text-decoration-line-through fw-medium" style={{ fontSize: '0.7rem' }}>${originalPrice}</span>
+          )}
+        </div>
+
+        {!isOutOfStock ? (
+          <div className="d-grid pt-1">
+            <button className="btn btn-dark rounded-3 py-1 fw-bold shadow-xs btn-compact-glow d-flex align-items-center justify-content-center gap-2" style={{ fontSize: '0.75rem' }}>
+              <i className="fas fa-shopping-cart" style={{ fontSize: '0.7rem' }}></i>
+              <span>Add to Cart</span>
             </button>
-            <button 
-              className={`wishlist-btn-horizontal ${isWishlisted ? 'active' : ''}`}
-              onClick={() => setIsWishlisted(!isWishlisted)}
-            >
-              <i className={`${isWishlisted ? 'fas' : 'far'} fa-heart`}></i>
+          </div>
+        ) : (
+          <div className="d-grid pt-1">
+            <button className="btn btn-light disabled rounded-3 py-1 fw-bold text-secondary" style={{ fontSize: '0.75rem' }} disabled>
+              Out of Stock
             </button>
           </div>
         )}
-
-        {isOutOfStock && (
-          <button className="out-of-stock-btn-horizontal" disabled>
-            <i className="fas fa-times-circle"></i> Out of Stock
-          </button>
-        )}
       </div>
+
+      <style>{`
+        .card-premium {
+          border: 1px solid rgba(0,0,0,0.03) !important;
+          background: #fff;
+          transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+        }
+        .card-premium:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
+          border-color: rgba(0,0,0,0.08) !important;
+        }
+        .card-premium:hover .card-image {
+          transform: scale(1.06);
+        }
+        .card-image {
+          transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .shadow-xs {
+          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .btn-compact-glow:active {
+          transform: scale(0.97);
+        }
+      `}</style>
     </div>
   );
 };
 
-export default ProductCard;
+export default ProductCard;
