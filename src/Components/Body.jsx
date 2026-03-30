@@ -1,9 +1,6 @@
-import ProductCard from "./Card";
+import ProductCard from "./ProductCard";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
-
-
 
 
 const Body = () => {
