@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import useProduct from "../utils/useProduct.jsx";
 
 // Helper function to render stars
 const RatingStars = ({ rating }) => {
@@ -75,48 +76,15 @@ const ReviewCard = ({ review }) => {
 // Main Product Page Component
 const ProductPage = () => {
   const { id } = useParams(); // Get product ID from URL
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { product, loading, error } = useProduct(id);
+
   const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(product?.minimumOrderQuantity || 1);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-  // Fetch product data when component mounts or ID changes
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await fetch(`https://dummyjson.com/products/${id}`);
-        
-        if (!response.ok) {
-          throw new Error(`Product not found (Status: ${response.status})`);
-        }
-        
-        const data = await response.json();
-        setProduct(data);
-        
-        // Set minimum order quantity if available, otherwise default to 1
-        const minQty = data.minimumOrderQuantity || 1;
-        setQuantity(minQty);
-        
-        // Ensure images array exists
-        if (!data.images || data.images.length === 0) {
-          data.images = [data.thumbnail];
-        }
-      } catch (err) {
-        setError(err.message);
-        console.error("Error fetching product:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  if (loading) return <h2>Loading...</h2>;
+  if (error) return <h2>Error: {error}</h2>;
 
-    if (id) {
-      fetchProduct();
-    }
-  }, [id]);
 
   // Calculate discounted price if discount exists
   const discountedPrice = product 
