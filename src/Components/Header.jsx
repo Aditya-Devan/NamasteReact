@@ -1,7 +1,9 @@
 import { HEADER_LOGO } from "../utils/constants";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus"
 
 const Header = () => {
+  const onlineStatus=useOnlineStatus();
   return (
     <nav className="navbar navbar-expand-lg navbar-dark border-bottom border-secondary border-opacity-25 shadow-xs py-1 sticky-top footer-compact">
       <div className="container py-1 d-flex justify-content-between align-items-center px-3 px-lg-4">
@@ -28,7 +30,8 @@ const Header = () => {
 
         <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul className="navbar-nav gap-lg-3 align-items-center">
-            <li className="nav-item">
+            <li className="nav-item nav-link-compact">Online Status{onlineStatus ? "✅":"🛑"}</li>
+            <li className="nav-item ">
               <Link className="nav-link-compact active" to="/">Home</Link>
             </li>
             <li className="nav-item">
@@ -127,4 +130,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Header;

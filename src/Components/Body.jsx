@@ -1,13 +1,14 @@
 import ProductCard from "./ProductCard";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import useOnlineStatus from "../utils/useOnlineStatus"
 
 const Body = () => {
   const [listOfProducts, setListOfProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTxt, setSearchTxt] = useState("");
   const [loading, setLoading] = useState(true);
+  const onlineStatus=useOnlineStatus();
 
   useEffect(() => {
     fetchData();
@@ -62,6 +63,14 @@ const Body = () => {
         <p>Loading amazing products...</p>
       </div>
     );
+  }
+
+  if(!onlineStatus){
+    return(
+      <div>
+        <h2>Ooops Something went wrong, check your internet connectivity</h2>
+      </div>
+    )
   }
 
   return (
