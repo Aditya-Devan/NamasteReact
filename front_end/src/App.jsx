@@ -1,5 +1,7 @@
+
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 import ReactDOM from "react-dom/client";
 import Header from "./Components/Header";
@@ -10,6 +12,9 @@ import Error from "./Components/Error";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import ProductPage from "./Components/ProductPage";
 import Footer from "./Components/Footer";
+import SignUp from "./Components/SignUp"
+import Login from "./Components/Login";
+import Profile from "./Components/Profile";
 
 const AppLayout = () => {
   return (
@@ -41,10 +46,23 @@ const appRouter = createBrowserRouter([
         path: "/contact",
         element: <Contact />,
       },
+      {
+        path: "/signUp",
+        element: <SignUp />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
       // In your App.js or router configuration
       {
         path : "/product/:id",
         element : <ProductPage />
+      }
+      ,
+      {
+       path: "/profile",
+       element: <Profile />
       }
     ],
     errorElement: <Error />,

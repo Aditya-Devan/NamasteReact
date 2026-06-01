@@ -1,0 +1,35 @@
+{
+  "name": "namastereact",
+  "version": "1.0.0",
+  "description": "This Is complete React",
+  "keywords": [
+    "N/A"
+  ],
+  "homepage": "https://github.com/Aditya-Devan/NamasteReact#readme",
+  "bugs": {
+    "url": "https://github.com/Aditya-Devan/NamasteReact/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aditya-Devan/NamasteReact.git"
+  },
+  "license": "ISC",
+  "author": "AdityaDevan",
+  "type": "commonjs",
+  "scripts": {
+    "start": "parcel idx.html",
+    "build": "parcel build idx.html",
+    "test": "Na"
+  },
+  "devDependencies": {
+    "parcel": "^2.16.4"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "jsonwebtoken": "^9.0.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-hook-form": "^7.76.1",
+    "react-router-dom": "^6.30.3"
+  }
+}

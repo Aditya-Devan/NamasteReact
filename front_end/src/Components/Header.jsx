@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus"
 
 const Header = () => {
+  const token = localStorage.getItem("token");
   const onlineStatus=useOnlineStatus();
+  const handleLogout = () => {
+  localStorage.removeItem("token");
+};
   return (
     <nav className="navbar navbar-expand-lg navbar-dark border-bottom border-secondary border-opacity-25 shadow-xs py-1 sticky-top footer-compact">
       <div className="container py-1 d-flex justify-content-between align-items-center px-3 px-lg-4">
@@ -40,6 +44,40 @@ const Header = () => {
             <li className="nav-item">
               <Link className="nav-link-compact" to="/contact">Contact</Link>
             </li>
+            {
+  token ? (
+    <>
+      <li className="nav-item">
+        <Link
+          className="nav-link-compact"
+          to="/profile"
+        >
+          Profile
+        </Link>
+      </li>
+    </>
+  ) : (
+    <>
+      <li className="nav-item">
+        <Link
+          className="nav-link-compact"
+          to="/login"
+        >
+          Login
+        </Link>
+      </li>
+
+      <li className="nav-item">
+        <Link
+          className="nav-link-compact"
+          to="/signup"
+        >
+          Sign Up
+        </Link>
+      </li>
+    </>
+  )
+}
             <li className="nav-item ms-lg-3">
               <button className="btn btn-light btn-compact-premium-light position-relative border-0 px-3 py-2 rounded-pill d-flex align-items-center gap-2">
                 <div className="cart-icon-wrapper-light">
